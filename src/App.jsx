@@ -1,45 +1,83 @@
-import  { useState } from 'react'
+import  { useState } from 'react';
+import axios from 'axios';
 
 function App() {
   const [imageUrl, setImageUrl] = useState("");
   const [prompt , setPromt] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState(null);
 
 
-  const generateImage = async()=> {
-    // let url = "https://i.ibb.co/p1DfjGj/meme74.jpg";
-    // setImageUrl(url);
-    console.log("Button Clicked!!!!");
-    console.log(prompt);
+  // const generateImage = async()=> {
+  //   try {
+  //     const options = {
+  //       method: 'POST',
+  //       headers: {
+  //         'content-type': 'application/json',
+  //         'X-RapidAPI-Key': '96ba5830admshf8455fc87fe91fcp1cffe6jsne6739aead237',
+  //         'X-RapidAPI-Host': 'ai-text-to-image-generator-api.p.rapidapi.com'
+  //       },
+  //       body: {
+  //         inputs: prompt
+  //       }
+  //     };
+  //     const response = await fetch('https://ai-text-to-image-generator-api.p.rapidapi.com/realistic', options);
+  //     const result = await response.text();
+  //     const res = JSON.parse(result);
+
+  //     setImageUrl(res.url); //set the image url
+  //   } catch (error) {
+  //     setErrors(error);
+  //     console.log("Error: ",error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   }
+
+  const generateImage = async () => {
+    const options = {
+      method: 'POST',
+      url: 'https://ai-text-to-image-generator-api.p.rapidapi.com/realistic',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '96ba5830admshf8455fc87fe91fcp1cffe6jsne6739aead237',
+        'X-RapidAPI-Host': 'ai-text-to-image-generator-api.p.rapidapi.com'
+      },
+      data: {
+        inputs: prompt
+      }
+    };
+
     try {
-      const options = {
-        method: 'POST',
-        headers: {
-          'x-rapidapi-key': '71d2e5926bmsh6f68f198a07cda5p162612jsne71114d195e3',
-          'x-rapidapi-host': 'ai-text-to-image-generator-api.p.rapidapi.com',
-          'Content-Type': 'application/json'
-        },
-        body: {
-          inputs: 'Cool goat wearing glasses and programming'
-        }
-      };
-      const response = await fetch('https://ai-text-to-image-generator-api.p.rapidapi.com/realistic', options);
-      const result = await response.json();
-      setImageUrl(result.url); // Adjust this based on the actual API response structure
+      const response = await axios.request(options);
+      setImageUrl(response.data.url);
+      console.log(response);
     } catch (error) {
-      console.log(error);
+      setErrors(error);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    }
-
+  }
 
 
   return (
     <>
       <h1>TasbirAI</h1>
       <div>
+        {
+          loading && <h3>Image will generate here!</h3>
+        }
+        {
+          imageUrl &&
         <img 
         height={"400px"}
         width={"300px"}
         src={imageUrl} alt="Genereted Image" />
+        }
+        {
+          errors && <h3>Error Generating an Image</h3>
+        }
       </div>
         <br />
         <input
