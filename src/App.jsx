@@ -8,32 +8,6 @@ function App() {
   const [errors, setErrors] = useState(null);
 
 
-  // const generateImage = async()=> {
-  //   try {
-  //     const options = {
-  //       method: 'POST',
-  //       headers: {
-  //         'content-type': 'application/json',
-  //         'X-RapidAPI-Key': '96ba5830admshf8455fc87fe91fcp1cffe6jsne6739aead237',
-  //         'X-RapidAPI-Host': 'ai-text-to-image-generator-api.p.rapidapi.com'
-  //       },
-  //       body: {
-  //         inputs: prompt
-  //       }
-  //     };
-  //     const response = await fetch('https://ai-text-to-image-generator-api.p.rapidapi.com/realistic', options);
-  //     const result = await response.text();
-  //     const res = JSON.parse(result);
-
-  //     setImageUrl(res.url); //set the image url
-  //   } catch (error) {
-  //     setErrors(error);
-  //     console.log("Error: ",error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //   }
-
   const generateImage = async () => {
     const options = {
       method: 'POST',
